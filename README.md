@@ -9,7 +9,7 @@ It takes form as a browser extension with several options to configure and for f
 ### 1.0
 
 - [ ] Some default emojis are replaced by default smiley faces
-- [ ] Basic replacement : each emoji is replaced naively
+- [x] Basic replacement : each emoji is replaced naively
 - [ ] Options : deciding between replacing or removing all the supported emojis
 - [ ] Complete project setup as an extension and first upload on one or several Webstores
 
