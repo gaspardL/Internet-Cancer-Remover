@@ -1,43 +1,44 @@
-var emojis = {
-    0x1F601: "^^", // 😁
-    0x1F602: "x'D", // 😂
-    0x1F605: "^^'", // 😅
-    0x1F606: "xD", // 😆
-    0x1F609: ";)", // 😉
-    0x1F60D: "<3", // 😍
-    0x1F60F: ";p", // 😏
-    0x1F614: ":(", // 😔
-    0x1F618: ";*", // 😘
-    0x1F61C: ";D", // 😜
-    0x1F61D: "XP", // 😝
-    0x1F62D: "D':", // 😭
-    0x1F631: "xO", // 😱
-    0x1F923: "XD", // 🤣
-};
-var MAX_LIMIT_NO_EMOJI = 8204;
+const MAX_LIMIT_NO_EMOJI = 8204;
+
+const OPTIONS_VERSION = 1;
 
 function getOptions() {
     return new Promise((resolve, reject) => {
-        chrome.storage.sync.get({
-            version: 1,
-            deleteEmojis: false
-        }, function(items) {
-            items = updateOptions(items);
-            chrome.runtime.lastError ? reject() : resolve(items);
+        chrome.storage.sync.get(["version", "deleteEmojis"], 
+        function(options) {
+            options = updateOptions(options);
+            chrome.runtime.lastError ? reject() : resolve(options);
         });
     });
 }
 
-// When changing this function, change also in options/options.js
 function updateOptions(options) {
-    if (options.version === 1) return options;
+    if (options.version === OPTIONS_VERSION) return options;
 
     var updatedOptions = {
-        version: 1,
-        deleteEmojis: options.deleteEmojis
+        version: OPTIONS_VERSION
     };
-    // Versions comparisons ...
+    if (!options.version) {
+        updatedOptions.deleteEmojis = false;
+    }
 
     chrome.storage.sync.set(updatedOptions);
-    return updateOptions;
+    return updatedOptions;
 }
+
+var emojis = {
+    0x1F601: [{ characters: [0xDE01], replacementText: "^^" }], // 😁
+    0x1F602: [{ characters: [0xDE02], replacementText: "x'D" }], // 😂
+    0x1F605: [{ characters: [0xDE05], replacementText: "^^'" }], // 😅
+    0x1F606: [{ characters: [0xDE06], replacementText: "xD" }], // 😆
+    0x1F609: [{ characters: [0xDE09], replacementText: ";)" }], // 😉
+    0x1F60D: [{ characters: [0xDE0D], replacementText: "<3" }], // 😍
+    0x1F60F: [{ characters: [0xDE0F], replacementText: ";p" }], // 😏
+    0x1F614: [{ characters: [0xDE14], replacementText: ":(" }], // 😔
+    0x1F618: [{ characters: [0xDE18], replacementText: ";*" }], // 😘
+    0x1F61C: [{ characters: [0xDE1C], replacementText: ";D" }], // 😜
+    0x1F61D: [{ characters: [0xDE1D], replacementText: "XP" }], // 😝
+    0x1F62D: [{ characters: [0xDE2D], replacementText: "D':" }], // 😭
+    0x1F631: [{ characters: [0xDE31], replacementText: "xO" }], // 😱
+    0x1F923: [{ characters: [0xDD23], replacementText: "XD" }], // 🤣
+};

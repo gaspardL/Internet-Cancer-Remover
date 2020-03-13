@@ -1,0 +1,16 @@
+.internet-cancer-replacement {
+    background-color: rgba(127, 127, 127, 0.2);
+    border-radius: 10%;
+}
+
+.internet-cancer-replacement .replaced-text {
+    display: none;
+}
+
+.internet-cancer-replacement:hover .replacement-text {
+    display: none;
+}
+
+.internet-cancer-replacement:hover .replaced-text {
+    display: inline;
+}

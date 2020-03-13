@@ -1,6 +1,6 @@
 {
     "name": "Internet Cancer Remover",
-    "description" : "Enhance your Internet browsing by replacing or removing all or part of emojis of websites",
+    "description" : "Enhance your Internet browsing by replacing or removing all or part of emojis in websites",
     "version": "0.4",
     "manifest_version": 2,
     "content_scripts": [
@@ -8,6 +8,7 @@
             "matches": [
                 "<all_urls>"
             ],
+            "css": ["content/style.css"],
             "js": ["content/config.js", "content/main.js"]
         }
     ],

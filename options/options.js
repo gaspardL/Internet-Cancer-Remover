@@ -1,24 +1,6 @@
-// When changing this function, change also in content/config.js
-function updateOptions(options) {
-    if (options.version === 1) return options;
-
-    var updatedOptions = {
-        version: 1,
-        deleteEmojis: options.deleteEmojis
-    };
-    // Versions comparisons ...
-
-    chrome.storage.sync.set(updatedOptions);
-    return updateOptions;
-}
-
 function restore_options() {
-    chrome.storage.sync.get({
-        version: 1,
-        deleteEmojis: false
-    }, function(items) {
-        items = updateOptions(items);
-        document.getElementById('deleteEmojis' + (items.deleteEmojis ? "1" : "0")).checked = true;
+    getOptions().then((options) => {
+        document.getElementById('deleteEmojis' + (options.deleteEmojis ? "1" : "0")).checked = true;
     });
 }
 
