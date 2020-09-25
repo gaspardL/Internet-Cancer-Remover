@@ -36,39 +36,44 @@ function invisibleReplacement(rootElement) {
 }
 
 function isInsertedElement(element) {
-    return  element.className === "internet-cancer-replacement";
+    return element.className === "internet-cancer-replacement";
 }
 
-function nextCharactersMatches(cursor, charactersArray, innerHTML) {
-    if (innerHTML.length < cursor + charactersArray.length) return false;
+function nextCharactersMatches(cursor, charactersArray, text) {
+    if (text.length < cursor + charactersArray.length) return false;
 
     for (let i = 0; i < charactersArray.length; i++) {
-        if (charactersArray[i] !== innerHTML.codePointAt(cursor + 1 + i)) {
+        if (charactersArray[i] !== text.codePointAt(cursor + 1 + i)) {
             return false;
         }
     }
     return true;
 }
 
-function readInnerHTML(currentElement) {
-    let cursor = 0;
-    while (cursor < currentElement.innerHTML.length) {
-        let character = currentElement.innerHTML.codePointAt(cursor);
+function getReplacementText(originalString, replacementText) {
+    return options.deleteEmojis ? "" : 
+        '<span class="internet-cancer-replacement"><span class="replacement-text">' + replacementText 
+        + '</span><span class="replaced-text">' + originalString + "</span></span>";
+}
 
-        if (emojis[character] != undefined) {
+function replaceInnerHTML(elementObject) {
+    let cursor = 0;
+    let text = elementObject.innerHTML;
+    while (cursor < text.length) {
+        let character = text.codePointAt(cursor);
+
+        if (character > MAX_LIMIT_NO_EMOJI && emojis[character] != undefined) {
             for (let replacementObject of emojis[character]) {
 
-                if (nextCharactersMatches(cursor, replacementObject.characters, currentElement.innerHTML)) {
+                if (nextCharactersMatches(cursor, replacementObject.characters, text)) {
                     let stringLength = replacementObject.characters.length + 1;
-                    let originalString = currentElement.innerHTML.substring(cursor, cursor + stringLength);
+                    let originalString = text.substring(cursor, cursor + stringLength);
 
-                    let toReplace = options.deleteEmojis ? "" : 
-                        '<span class="internet-cancer-replacement"><span class="replacement-text">' + replacementObject.replacementText 
-                        + '</span><span class="replaced-text">' + originalString + "</span></span>";
+                    let toReplace = getReplacementText(originalString, replacementObject.replacementText);
                     
-                    currentElement.innerHTML = currentElement.innerHTML.slice(0, cursor) 
+                    text = text.slice(0, cursor) 
                         + toReplace 
-                        + currentElement.innerHTML.slice(cursor + stringLength);
+                        + text.slice(cursor + stringLength);
                     cursor = cursor + toReplace.length - stringLength;
                     break;
                 }
@@ -76,11 +81,33 @@ function readInnerHTML(currentElement) {
         }
         cursor++;
     }
+    elementObject.innerHTML = text;
+}
+
+function replaceImage(elementObject) {
+    let alt = elementObject.getAttribute("alt");
+
+    if (!alt) return false;
+
+    let character = alt.codePointAt(0);
+
+    if (character > MAX_LIMIT_NO_EMOJI && emojis[character] != undefined) {
+        for (let replacementObject of emojis[character]) {
+
+            if (nextCharactersMatches(0, replacementObject.characters, alt)) {
+                let originalString = elementObject.outerHTML;
+
+                let toReplace = getReplacementText(originalString, replacementObject.replacementText);
+                
+                elementObject.outerHTML = toReplace;
+                return true;
+            }
+        }
+    }
+    return false;
 }
 
 function iterativeProcessing(rootElement) {
-
-    // console.log("rootElement", rootElement);
 
     let elementStack = [];
     elementStack.push(rootElement);
@@ -93,13 +120,18 @@ function iterativeProcessing(rootElement) {
         }
         
         let tmpStack = [];
-        let containsRowText = false;
+        let containsRowText = false; 
         let hasInsertedElement = false;
         for(let i = currentElement.childNodes.length - 1; i >= 0 ; i--) {
 
             if (isInsertedElement(currentElement.childNodes[i])) {
                 hasInsertedElement = true;
-            } 
+            }
+            else if (currentElement.childNodes[i].nodeName === "IMG") {
+                if (replaceImage(currentElement.childNodes[i])) {
+                    hasInsertedElement = true;
+                }
+            }
             else if(currentElement.childNodes[i].nodeType === NodeType.TEXT && currentElement.childNodes[i].textContent.trim().length !== 0) {
                 containsRowText = true;
             } 
@@ -111,7 +143,7 @@ function iterativeProcessing(rootElement) {
         if (!containsRowText || hasInsertedElement) {
             elementStack = elementStack.concat(tmpStack);
         } else {
-            readInnerHTML(currentElement);
+            replaceInnerHTML(currentElement);
         }
     }
 }
