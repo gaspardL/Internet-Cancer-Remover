@@ -31,13 +31,17 @@ function resetOptions() {
     updateValidity();
 }
 
-function save() {
-    chrome.storage.sync.set({
+function getOptionValues() {
+    return {
         keepEmojis: document.querySelector('input[name="keepEmojis"]:checked').value,
         replaceEmojis: id('replaceEmojis').checked,
         displayOriginals: id('displayOriginals').checked,
         invisibleReplacement: id('invisibleReplacement').checked
-    }, () => {
+    };
+}
+
+function save() {
+    chrome.storage.sync.set(getOptionValues(), () => {
         displayStatus();
     });
 }
@@ -57,6 +61,22 @@ function updateValidity() {
     if (id('invisibleReplacement').disabled) {
         id('invisibleReplacement').checked = false;
     }
+    updateExample();
+}
+
+function updateExample() {
+    id('exampleDisplayBody').innerHTML = `
+    <p>
+        OMG 😱 You're killing me 😂😂😂🤣🤣<br />
+        I'm so dead 😭😭😭😂
+    <p/>
+    <p>
+        Twitterrrr <img style="height: 1rem;" class="emoji" draggable="false" alt="😉" src="https://abs.twimg.com/emoji/v2/72x72/1f609.png"/><br />
+        Facebook <img style="height: 1rem;" class="emoji" draggable="false" alt="😉" src="https://abs.twimg.com/emoji/v2/72x72/1f609.png"/>
+    <p/>
+    `;
+    options = getOptionValues();
+    mainTask(id('exampleDisplayBody'));
 }
 
 document.addEventListener('DOMContentLoaded', restore_options);

@@ -18,9 +18,9 @@ It takes form as a browser extension with several options to configure and for f
 ## Future Objectives
 
 - [ ] Groups of emojis are replaced by a limited number of smiley faces
+- [ ] Disable and enable the extension for specific websites
 - [ ] Complete project setup as an extension and first upload on one or several Webstores
 - [ ] Large range of emojis are supported for replacement or removal
 - [ ] Options : deciding between replacing or removing each emoji. Replacement is specific for each emoji
 - [ ] Options : Default setups can be selected for replacement and removal. Several preconfigured sets are possible
 - [ ] Majority of emojis are supported for replacement or removal
-- [ ] Disable and enable the extension for specific websites
