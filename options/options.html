@@ -8,18 +8,49 @@
 </head>
 <body>
     <div class="container">
-        <div class="form-check">
-            <input class="form-check-input" type="radio" name="deleteEmojis" id="deleteEmojis0" value="0">
-            <label class="form-check-label" for="deleteEmojis0">
-                Replace emojis with default smileys
-            </label>
-        </div>
-        <div class="form-check">
-            <input class="form-check-input" type="radio" name="deleteEmojis" id="deleteEmojis1" value="1">
-            <label class="form-check-label" for="deleteEmojis1">
-                Remove all emojis
-            </label>
-        </div>
+        <h1>Options</h1>
+        <ul class="list-group">
+            <li class="list-group-item">
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="keepEmojis" id="keepEmojis_none" value="none">
+                    <label class="form-check-label" for="keepEmojis_none">
+                        Remove all emojis
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="keepEmojis" id="keepEmojis_all" value="all">
+                    <label class="form-check-label" for="keepEmojis_all">
+                        Keep all emojis
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="keepEmojis" id="keepEmojis_first" value="first">
+                    <label class="form-check-label" for="keepEmojis_first">
+                        Keep the first emoji of each group
+                    </label>
+                </div>
+            </li>
+            <li class="list-group-item" id="keepEmojisSection">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="replaceEmojis" id="replaceEmojis">
+                    <label class="form-check-label" for="replaceEmojis">
+                        Replace emojis by smileys
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="displayOriginals" id="displayOriginals">
+                    <label class="form-check-label" for="displayOriginals">
+                        Display original emojis when moving mouse on alteration
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="invisibleReplacement" id="invisibleReplacement">
+                    <label class="form-check-label" for="invisibleReplacement">
+                        Invisible alteration (no shadow)
+                    </label>
+                </div>
+            </li>
+        </ul>
         <hr />
         <button id="save" class="btn btn-primary">Save</button>
         <button id="resetOptions" class="btn btn-secondary">Reset options</button>
@@ -29,6 +60,7 @@
     
     </div>
     <script src="../content/config.js"></script>
+    <script src="../content/process.js"></script>
     <script src="options.js"></script>
 </body>
 </html>

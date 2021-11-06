@@ -2,10 +2,16 @@ const MAX_LIMIT_NO_EMOJI = 8204;
 
 const OPTIONS_VERSION = 1;
 
+const KeepEmojis = {
+    NONE: 'none',
+    ALL: 'all',
+    FIRST: 'first'
+};
+
 function getOptions() {
     return new Promise((resolve, reject) => {
-        chrome.storage.sync.get(["version", "deleteEmojis"], 
-        function(options) {
+        chrome.storage.sync.get(["version", "keepEmojis", "replaceEmojis", "displayOriginals", "invisibleReplacement"], 
+        (options) => {
             options = updateOptions(options);
             chrome.runtime.lastError ? reject() : resolve(options);
         });
@@ -18,8 +24,12 @@ function updateOptions(options) {
     var updatedOptions = {
         version: OPTIONS_VERSION
     };
+
     if (!options.version) {
-        updatedOptions.deleteEmojis = false;
+        updatedOptions.keepEmojis = KeepEmojis.ALL;
+        updatedOptions.replaceEmojis = true;
+        updatedOptions.displayOriginals = true;
+        updatedOptions.invisibleReplacement = false;
     }
 
     chrome.storage.sync.set(updatedOptions);
