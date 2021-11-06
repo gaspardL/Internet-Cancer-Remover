@@ -8,7 +8,7 @@ function restore_options() {
         id('replaceEmojis').disabled = options.keepEmojis === KeepEmojis.NONE;
         id('replaceEmojis').checked = options.replaceEmojis;
         id('displayOriginals').checked = options.displayOriginals;
-        id('invisibleReplacement').checked = options.invisibleReplacement;
+        id('visibleAlteration').checked = options.visibleAlteration;
         updateValidity();
     });
 }
@@ -27,7 +27,7 @@ function resetOptions() {
     id('keepEmojis_all').checked = true;
     id('replaceEmojis').checked = true;
     id('displayOriginals').checked = true;
-    id('invisibleReplacement').checked = false;
+    id('visibleAlteration').checked = true;
     updateValidity();
 }
 
@@ -36,7 +36,7 @@ function getOptionValues() {
         keepEmojis: document.querySelector('input[name="keepEmojis"]:checked').value,
         replaceEmojis: id('replaceEmojis').checked,
         displayOriginals: id('displayOriginals').checked,
-        invisibleReplacement: id('invisibleReplacement').checked
+        visibleAlteration: id('visibleAlteration').checked
     };
 }
 
@@ -52,14 +52,14 @@ function updateValidity() {
     if (id('replaceEmojis').disabled) {
         id('replaceEmojis').checked = false;
     }
-    id('displayOriginals').disabled = (keepEmojis !== KeepEmojis.NONE || id('invisibleReplacement').checked) 
+    id('displayOriginals').disabled = (keepEmojis !== KeepEmojis.NONE || !id('visibleAlteration').checked) 
         && !id('replaceEmojis').checked && keepEmojis !== KeepEmojis.FIRST;
     if (id('displayOriginals').disabled) {
         id('displayOriginals').checked = false;
     }
-    id('invisibleReplacement').disabled = !id('replaceEmojis').checked && keepEmojis === KeepEmojis.ALL;
-    if (id('invisibleReplacement').disabled) {
-        id('invisibleReplacement').checked = false;
+    id('visibleAlteration').disabled = !id('replaceEmojis').checked && keepEmojis === KeepEmojis.ALL;
+    if (id('visibleAlteration').disabled) {
+        id('visibleAlteration').checked = false;
     }
     updateExample();
 }
@@ -87,4 +87,4 @@ id('keepEmojis_all').addEventListener('change', updateValidity);
 id('keepEmojis_first').addEventListener('change', updateValidity);
 id('replaceEmojis').addEventListener('change', updateValidity);
 id('displayOriginals').addEventListener('change', updateValidity);
-id('invisibleReplacement').addEventListener('change', updateValidity);
+id('visibleAlteration').addEventListener('change', updateValidity);

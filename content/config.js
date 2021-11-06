@@ -10,7 +10,7 @@ const KeepEmojis = {
 
 function getOptions() {
     return new Promise((resolve, reject) => {
-        chrome.storage.sync.get(["version", "keepEmojis", "replaceEmojis", "displayOriginals", "invisibleReplacement"], 
+        chrome.storage.sync.get(["version", "keepEmojis", "replaceEmojis", "displayOriginals", "visibleAlteration"], 
         (options) => {
             options = updateOptions(options);
             chrome.runtime.lastError ? reject() : resolve(options);
@@ -29,7 +29,7 @@ function updateOptions(options) {
         updatedOptions.keepEmojis = KeepEmojis.ALL;
         updatedOptions.replaceEmojis = true;
         updatedOptions.displayOriginals = true;
-        updatedOptions.invisibleReplacement = false;
+        updatedOptions.visibleAlteration = true;
     }
 
     chrome.storage.sync.set(updatedOptions);

@@ -7,7 +7,7 @@ const NodeType = {
 
 var options;
 
-// function invisibleReplacement(rootElement) {
+// function invisibleAlteration(rootElement) {
 
 //     var elementStack = [];
 //     elementStack.push(rootElement);
@@ -51,7 +51,7 @@ function nextCharactersMatches(cursor, charactersArray, text) {
 }
 
 function getReplacementText(originalString, replacementText) {
-    if (options.keepEmojis === KeepEmojis.NONE && options.invisibleReplacement) {
+    if (options.keepEmojis === KeepEmojis.NONE && !options.visibleAlteration) {
         return '';
     }
     if (!options.replaceEmojis) {
@@ -63,7 +63,7 @@ function getReplacementText(originalString, replacementText) {
     if (!options.displayOriginals) {
         originalString = replacementText;
     }
-    return '<span class="internet-cancer-replacement ' + (options.invisibleReplacement ? '' : 'shadowing')
+    return '<span class="internet-cancer-replacement ' + (options.visibleAlteration ? 'shadowing' : '')
         + '"><span class="replacement-text">' + replacementText + '</span><span class="replaced-text">' + originalString + '</span></span>';
 }
 
