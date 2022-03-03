@@ -39,6 +39,12 @@ function isInsertedElement(element) {
     return element.className && element.className.length > 0 && element.className.includes("internet-cancer-replacement");
 }
 
+function isIgnored(element) {
+    return element.nodeName === 'SCRIPT'
+        || isInsertedElement(element)
+        || (element['getAttribute'] && element.getAttribute('contenteditable') === 'true');
+}
+
 function nextCharactersMatches(cursor, charactersArray, text) {
     if (text.length < cursor + charactersArray.length) return false;
 
@@ -126,7 +132,7 @@ function iterativeProcessing(rootElement) {
     while(elementStack.length !== 0) {
         let currentElement = elementStack.pop();
 
-        if (currentElement.nodeName === 'SCRIPT' || isInsertedElement(currentElement)) {
+        if (isIgnored(currentElement)) {
             continue;
         }
         

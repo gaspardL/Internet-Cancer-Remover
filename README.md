@@ -24,3 +24,8 @@ It takes form as a browser extension with several options to configure and for f
 - [ ] Options : deciding between replacing or removing each emoji. Replacement is specific for each emoji
 - [ ] Options : Default setups can be selected for replacement and removal. Several preconfigured sets are possible
 - [ ] Majority of emojis are supported for replacement or removal
+
+## Known issues
+
+- [ ] Some inputs reverse the writing direction (Messenger, Reddit)
+- [ ] Events response are not displayed in MyAnimeList
